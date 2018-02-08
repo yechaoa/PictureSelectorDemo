@@ -43,72 +43,6 @@ public class MainActivity extends AppCompatActivity {
         initWidget();
     }
 
-    private void showPop() {
-        View bottomView = View.inflate(MainActivity.this, R.layout.layout_bottom_dialog, null);
-        TextView mAlbum = (TextView) bottomView.findViewById(R.id.tv_album);
-        TextView mCamera = (TextView) bottomView.findViewById(R.id.tv_camera);
-        TextView mCancel = (TextView) bottomView.findViewById(R.id.tv_cancel);
-
-        pop = new PopupWindow(bottomView, -1, -2);
-        pop.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        pop.setOutsideTouchable(true);
-        pop.setFocusable(true);
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = 0.5f;
-        getWindow().setAttributes(lp);
-        pop.setOnDismissListener(new PopupWindow.OnDismissListener() {
-
-            @Override
-            public void onDismiss() {
-                WindowManager.LayoutParams lp = getWindow().getAttributes();
-                lp.alpha = 1f;
-                getWindow().setAttributes(lp);
-            }
-        });
-        pop.setAnimationStyle(R.style.main_menu_photo_anim);
-        pop.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
-
-        View.OnClickListener clickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (view.getId()) {
-                    case R.id.tv_album:
-                        //相册
-                        PictureSelector.create(MainActivity.this)
-                                .openGallery(PictureMimeType.ofImage())
-                                .maxSelectNum(maxSelectNum)
-                                .minSelectNum(1)
-                                .imageSpanCount(4)
-                                .selectionMode(PictureConfig.MULTIPLE)
-                                .forResult(PictureConfig.CHOOSE_REQUEST);
-                        break;
-                    case R.id.tv_camera:
-                        //拍照
-                        PictureSelector.create(MainActivity.this)
-                                .openCamera(PictureMimeType.ofImage())
-                                .forResult(PictureConfig.CHOOSE_REQUEST);
-                        break;
-                    case R.id.tv_cancel:
-                        //取消
-                        //closePopupWindow();
-                        break;
-                }
-                closePopupWindow();
-            }
-        };
-
-        mAlbum.setOnClickListener(clickListener);
-        mCamera.setOnClickListener(clickListener);
-        mCancel.setOnClickListener(clickListener);
-    }
-
-    public void closePopupWindow() {
-        if (pop != null && pop.isShowing()) {
-            pop.dismiss();
-            pop = null;
-        }
-    }
-
     private void initWidget() {
         FullyGridLayoutManager manager = new FullyGridLayoutManager(this, 3, GridLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(manager);
@@ -183,6 +117,72 @@ public class MainActivity extends AppCompatActivity {
 //                    .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
         }
     };
+
+    private void showPop() {
+        View bottomView = View.inflate(MainActivity.this, R.layout.layout_bottom_dialog, null);
+        TextView mAlbum = (TextView) bottomView.findViewById(R.id.tv_album);
+        TextView mCamera = (TextView) bottomView.findViewById(R.id.tv_camera);
+        TextView mCancel = (TextView) bottomView.findViewById(R.id.tv_cancel);
+
+        pop = new PopupWindow(bottomView, -1, -2);
+        pop.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        pop.setOutsideTouchable(true);
+        pop.setFocusable(true);
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = 0.5f;
+        getWindow().setAttributes(lp);
+        pop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+
+            @Override
+            public void onDismiss() {
+                WindowManager.LayoutParams lp = getWindow().getAttributes();
+                lp.alpha = 1f;
+                getWindow().setAttributes(lp);
+            }
+        });
+        pop.setAnimationStyle(R.style.main_menu_photo_anim);
+        pop.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+
+        View.OnClickListener clickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.tv_album:
+                        //相册
+                        PictureSelector.create(MainActivity.this)
+                                .openGallery(PictureMimeType.ofImage())
+                                .maxSelectNum(maxSelectNum)
+                                .minSelectNum(1)
+                                .imageSpanCount(4)
+                                .selectionMode(PictureConfig.MULTIPLE)
+                                .forResult(PictureConfig.CHOOSE_REQUEST);
+                        break;
+                    case R.id.tv_camera:
+                        //拍照
+                        PictureSelector.create(MainActivity.this)
+                                .openCamera(PictureMimeType.ofImage())
+                                .forResult(PictureConfig.CHOOSE_REQUEST);
+                        break;
+                    case R.id.tv_cancel:
+                        //取消
+                        //closePopupWindow();
+                        break;
+                }
+                closePopupWindow();
+            }
+        };
+
+        mAlbum.setOnClickListener(clickListener);
+        mCamera.setOnClickListener(clickListener);
+        mCancel.setOnClickListener(clickListener);
+    }
+
+    public void closePopupWindow() {
+        if (pop != null && pop.isShowing()) {
+            pop.dismiss();
+            pop = null;
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
