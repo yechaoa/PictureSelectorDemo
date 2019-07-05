@@ -19,13 +19,11 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.luck.picture.lib.tools.DateUtils;
-import com.luck.picture.lib.tools.DebugUtil;
 import com.luck.picture.lib.tools.StringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * author：luck
@@ -34,8 +32,7 @@ import java.util.List;
  * email：893855882@qq.com
  * data：16/7/27
  */
-public class GridImageAdapter extends
-        RecyclerView.Adapter<GridImageAdapter.ViewHolder> {
+public class GridImageAdapter extends RecyclerView.Adapter<GridImageAdapter.ViewHolder> {
     public static final int TYPE_CAMERA = 1;
     public static final int TYPE_PICTURE = 2;
     private LayoutInflater mInflater;
@@ -71,11 +68,11 @@ public class GridImageAdapter extends
         LinearLayout ll_del;
         TextView tv_duration;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
-            mImg = (ImageView) view.findViewById(R.id.fiv);
-            ll_del = (LinearLayout) view.findViewById(R.id.ll_del);
-            tv_duration = (TextView) view.findViewById(R.id.tv_duration);
+            mImg = view.findViewById(R.id.fiv);
+            ll_del = view.findViewById(R.id.ll_del);
+            tv_duration = view.findViewById(R.id.tv_duration);
         }
     }
 
@@ -102,14 +99,12 @@ public class GridImageAdapter extends
      */
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = mInflater.inflate(R.layout.item_filter_image,
-                viewGroup, false);
-        final ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        View view = mInflater.inflate(R.layout.item_filter_image, viewGroup, false);
+        return new ViewHolder(view);
     }
 
     private boolean isShowAddItem(int position) {
-        int size = list.size() == 0 ? 0 : list.size();
+        int size = list.size();
         return position == size;
     }
 
@@ -140,13 +135,13 @@ public class GridImageAdapter extends
                         list.remove(index);
                         notifyItemRemoved(index);
                         notifyItemRangeChanged(index, list.size());
-                        DebugUtil.i("delete position:", index + "--->remove after:" + list.size());
+                        Log.i("delete position:", index + "--->remove after:" + list.size());
                     }
                 }
             });
             LocalMedia media = list.get(position);
             int mimeType = media.getMimeType();
-            String path = "";
+            String path;
             if (media.isCut() && !media.isCompressed()) {
                 // 裁剪过
                 path = media.getCutPath();
@@ -205,13 +200,13 @@ public class GridImageAdapter extends
         }
     }
 
-    protected OnItemClickListener mItemClickListener;
+    private OnItemClickListener mItemClickListener;
 
     public interface OnItemClickListener {
         void onItemClick(int position, View v);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
+    void setOnItemClickListener(OnItemClickListener listener) {
         this.mItemClickListener = listener;
     }
 }
